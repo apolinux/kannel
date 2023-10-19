@@ -4,6 +4,15 @@ namespace Apolinux\Kannel;
 
 use Apolinux\Validator\Validator;
 
+/**
+ * validate MO
+ * 
+ * not ready yet
+ * 
+ * @see https://www.kannel.org/download/1.4.5/userguide-1.4.5/userguide.html#AEN4069
+ * 
+ * @author apolinux
+ */
 class ReadMo{
 
   const MAP_FIELDS_DEFAULT = [
