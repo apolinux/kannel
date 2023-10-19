@@ -1,0 +1,23 @@
+{
+    "name": "apolinux/kannel",
+    "authors": [
+        {
+            "name": "Carlos Arce",
+            "email": "apolinux@gmail.com"
+        }
+    ],
+    "description": "kannel mo/mt basic",
+    "type": "library",
+    "autoload": {
+        "psr-4": { "Apolinux\\": "src/" }
+    },
+    "license": "MIT",
+    "require-dev": {
+        "phpunit/phpunit":"9.*"
+    },
+    "require": {
+        "php":">=7.4",
+        "apolinux/curl": "^0.7.6",
+        "apolinux/validator": "^0.5.2"
+    }
+}
