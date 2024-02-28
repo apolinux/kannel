@@ -3,68 +3,69 @@
 namespace Apolinux\Kannel;
 
 use Apolinux\Validator\Validator;
+use stdClass;
 
-/**
- * validate MO
- * 
- * not ready yet
- * 
- * @see https://www.kannel.org/download/1.4.5/userguide-1.4.5/userguide.html#AEN4069
- * 
- * @author apolinux
- */
 class ReadMo{
 
-  const MAP_FIELDS_DEFAULT = [
+  /**
+   * @var Validator
+   */
+  private $validator ;
+
+  private $clean_text ;
+  private $clean_from ;
+  private $clean_to ;
+
+  private $param_obj = [
     'from' => 'from',
-    'to'   => 'to'  ,
-    'text' => 'text' ,
+    'to' => 'to',
+    'text' => 'text',
   ];
 
-  private $rules ;
-
-  private $result ;
-
-  private $map_fields = self::MAP_FIELDS_DEFAULT ;
-
-  public function __construct($rules=[], $map_fields=self::MAP_FIELDS_DEFAULT)
-  {
-    $this->rules      = $rules ;
-    $this->map_fields = $map_fields ;
+  public function __construct($param_obj=[],$clean_text=true, $clean_from=true, $clean_to=true){
+    $this->param_obj = $param_obj; 
+    $this->clean_text = $clean_text;
+    $this->clean_from = $clean_from;
+    $this->clean_to = $clean_to;
   }
 
-  /**
-   */
-  public function validate($request, $filter_fields=true)  {
-    $validator = new Validator($this->rules);
+  public function read($input=[]){
+    $out = $this->parseInput($input);
 
-    $is_valid = $validator->validate($request);
-
-    if(! $is_valid){
-      throw new KannelException($validator->getLastError());
+    if($this->validator){
+      if(! $this->validator->validate($input)){
+        throw new ReadMoException($this->validator->getLastError());
+      }
     }
 
-    if($filter_fields){
-      // filter fields
-      $this->filterFields($request);
+    if($this->clean_text){
+        $out->text = preg_replace('/[^ A-Za-z0-9]/','',$out->text);
     }
+
+    if($this->clean_from){
+      $out->from = preg_replace('/^\+/','',$out->from);
+    }
+
+    if($this->clean_to){
+      $out->to = preg_replace('/^\+/','',$out->to);
+    }
+
+    return $out ;
   }
 
-  private function filterFields(&$request){
-    $text_field_name = $this->map_fields['text'];
-    $this->filterText($request, $text_field_name);
+  public function setValidationRules($rules){
+    $this->validator = new Validator($rules);
   }
 
-  private function filterText(&$request, $field_name){
-    if(! isset($request[$field_name])){
-      return ;
-    }
-    // allow only number and letters and
-    // remove many spaces
-    $request[$field_name] = preg_replace(
-      ['/[^0-9A-Za-z ]/', '/\s{2,}/'],  
-      [''               , ' '       ],  
-      $request[$field_name]);
+  private function parseInput($input){
+    $obj = new stdClass;
 
+    foreach($this->param_obj as $item => $val){
+      if(isset($input[$val])){
+        $obj->$item = $input[$val];
+      }
+    }
+
+    return $obj ;
   }
 }

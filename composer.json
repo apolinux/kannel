@@ -9,7 +9,8 @@
     "description": "kannel mo/mt basic",
     "type": "library",
     "autoload": {
-        "psr-4": { "Apolinux\\": "src/" }
+        "psr-4": { "Apolinux\\": "src/" },
+        "files":["src/Functions.php"]
     },
     "license": "MIT",
     "require-dev": {

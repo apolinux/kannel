@@ -2,7 +2,7 @@
 
 namespace Apolinux\Kannel ;
 
-use Apolinux\Curl\Curl;
+use Apolinux\Curl\Curle;
 
 /**
  * send MT to Kannel server
@@ -49,7 +49,7 @@ class SendMt{
 
     $full_url = $url . '?' . http_build_query($full_params);
     
-    $curl = new Curl();
+    $curl = new Curle();
     $response = $curl->get($full_url,null,'text/plain', $timeout);
 
     return new SendMtResponse($response);

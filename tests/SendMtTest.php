@@ -4,25 +4,18 @@
 use Apolinux\Kannel\SendMt;
 use PHPUnit\Framework\TestCase as PHPUnit_Framework_TestCase ;
 
-class KannelTest extends PHPUnit_Framework_TestCase{
+class SendMtTest extends PHPUnit_Framework_TestCase{
 
     private $port = 8000 ;
     private $url = 'http://localhost';
 
     public function setUp():void {
         parent::setUp();
-        $this->url = "$this->url:$this->port";
-        //$response = file_get_contents($this->url) ;
-        $curl = curl_init("$this->url?type=0");
-        curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
-        $response = curl_exec($curl);
-        $info = curl_getinfo($curl);
-        curl_close($curl);
-        $this->assertEquals(202,$info['http_code'],
-        'must be enable a web server to do the test. Example: php -S localhost:8000 -t ./tests/server');
+        putenv('MOCK_CURL=1');
     }
 
     public function testSendMtOk(){
+        
         $kannel = new SendMt;
         $response = $kannel->send(
           "$this->url?type=0", 
