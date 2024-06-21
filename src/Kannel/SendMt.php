@@ -52,7 +52,7 @@ class SendMt{
     $curl = new Curle();
     $response = $curl->get($full_url,null,'text/plain', $timeout);
 
-    return new SendMtResponse($response);
+    return new SendMtResponse($response, $full_url);
   }
 
   /**

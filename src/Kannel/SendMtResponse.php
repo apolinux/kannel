@@ -28,17 +28,24 @@ class SendMtResponse{
    * @var float
    */
   public $duration ;
+
+  /**
+   * full URL requested
+   * @var string
+   */
+  public $fullurl ;
   
   /**
    * __construct
    *
    * @param  Response $curl
    */
-  public function __construct(Response $response)
+  public function __construct(Response $response, string $fullurl)
   {
     $this->response = $response ;
     $this->text = $this->response->response ;
     $this->http_code = $response->http_code ;
     $this->duration = $response->duration ;
+    $this->fullurl = $fullurl;
   }
 }
